@@ -7,8 +7,7 @@
 
 //dependencies
 const http = require('http');
-const url = require('url');
-const {StringDecoder} = require('string_decoder');
+const {handelReqRes} = require('./helpers/handleReqRes')
 //app objcet module scaffolding
 const app={};
 
@@ -26,33 +25,7 @@ app.createServer =()=>{
 }
 
 //handle requst responce
-app.handleReqRes =(req,res)=>{
-    //handle req
-    const parseUrl = url.parse(req.url,true);
-    const path =parseUrl.pathname;
-    const trimmedPath = path.replace(/^\/+|\/+$/g,'');
-    const method = req.method.toLowerCase();
-    const queryStringObject = parseUrl.query;
-    const headersObject = req.headers;
-    
-    const decoder = new StringDecoder('utf-8');
-    let realData ='';
-
-    req.on('data',(buffer)=>{
-        realData += decoder.write(buffer);
-    })
-
-    req.on('end',()=>{
-        realData += decoder.end();
-        console.log(realData);
-
-        //handle res
-        res.end('hello programmer');
-    })
-
-   
-    
-}
+app.handleReqRes = handelReqRes;
 
 //start the server
 app.createServer();
